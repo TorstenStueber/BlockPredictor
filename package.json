@@ -1,0 +1,24 @@
+{
+  "name": "blockpredictor",
+  "version": "1.0.0",
+  "description": "Slack script to predict important Polkadot block numbers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TorstenStueber/BlockPredictor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TorstenStueber/BlockPredictor/issues"
+  },
+  "homepage": "https://github.com/TorstenStueber/BlockPredictor#readme",
+  "dependencies": {
+    "@polkadot/api": "^9.8.2",
+    "node-fetch": "^3.3.0"
+  }
+}
