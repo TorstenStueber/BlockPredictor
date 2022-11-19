@@ -75,8 +75,8 @@ export const handler = async () => {
   console.log("Predicted time", auctionStartString, leasePeriodStartString);
 
   if (LEASE_PERIOD_START_BLOCK >= currentBlock) {
-    const actionStartMessage = `I predict that the *auction starts* at *${auctionStartString}*`;
-    const leasePeriodStartMessage = `I predict that *Pendulum launches* at *${leasePeriodStartString}*`;
+    const actionStartMessage = `I predict that the *auction starts* on *${auctionStartString}* (block #${AUCTION_START_BLOCK})`;
+    const leasePeriodStartMessage = `I predict that *Pendulum launches* on *${leasePeriodStartString}* (block #${LEASE_PERIOD_START_BLOCK})`;
 
     const message =
       AUCTION_START_BLOCK >= currentBlock
