@@ -76,7 +76,7 @@ export const handler = async () => {
 
   if (LEASE_PERIOD_START_BLOCK >= currentBlock) {
     const actionStartMessage = `I predict that the *auction starts* on *${auctionStartString}* (block #${AUCTION_START_BLOCK})`;
-    const leasePeriodStartMessage = `I predict that *Pendulum launches* on *${leasePeriodStartString}* (block #${LEASE_PERIOD_START_BLOCK})`;
+    const leasePeriodStartMessage = `I predict that *the lease slot starts* on *${leasePeriodStartString}* (block #${LEASE_PERIOD_START_BLOCK})`;
 
     const message =
       AUCTION_START_BLOCK >= currentBlock
