@@ -4,11 +4,13 @@ import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-sec
 
 const POLKADOT_RELAY_CHAIN_RPC_URL = "wss://polkadot.api.onfinality.io/public-ws";
 
-const REFERENCE_BLOCK_NUMBER = 8000000;
-const RERFERNCE_BLOCK_TIME = 1638703104001;
+const REFERENCE_BLOCK_NUMBER = 12000000; // 8000000;
+const RERFERNCE_BLOCK_TIME = 1662888774011; // 1638703104001;
 
 const AUCTION_START_BLOCK = 13374400;
 const LEASE_PERIOD_START_BLOCK = 14238400;
+
+const DRY_RUN = false;
 
 const SECRET_NAME = "SlackBlockPredictor";
 
@@ -42,17 +44,19 @@ function formatDate(date) {
 export const handler = async () => {
   console.log("Block predictor executed");
 
-  const client = new SecretsManagerClient({ region: "eu-central-1" });
+  const client = DRY_RUN ? undefined : new SecretsManagerClient({ region: "eu-central-1" });
   let webHookPath;
   try {
-    const response = await client.send(
-      new GetSecretValueCommand({
-        SecretId: SECRET_NAME,
-        VersionStage: "AWSCURRENT",
-      })
-    );
+    const response = DRY_RUN
+      ? ""
+      : await client.send(
+          new GetSecretValueCommand({
+            SecretId: SECRET_NAME,
+            VersionStage: "AWSCURRENT",
+          })
+        );
 
-    webHookPath = JSON.parse(response.SecretString).Webhook;
+    webHookPath = DRY_RUN ? "" : JSON.parse(response.SecretString).Webhook;
   } catch (error) {
     console.log("Block predictor exception", error);
     throw error;
@@ -83,10 +87,14 @@ export const handler = async () => {
         ? `${actionStartMessage}\n${leasePeriodStartMessage}`
         : leasePeriodStartMessage;
 
-    await fetch(`https://hooks.slack.com/services/${webHookPath}`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ text: message }),
-    });
+    if (!DRY_RUN) {
+      await fetch(`https://hooks.slack.com/services/${webHookPath}`, {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ text: message }),
+      });
+    }
   }
 };
+
+if (DRY_RUN) handler();
